@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('link');
             $table->string('summary')->nullable();
-            $table->string('content')->nullable();
             $table->string('feed_entry_id');
+            $table->timestamp('updated')->nullable();
             $table->timestamps();
         });
     }

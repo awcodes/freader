@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProcessFeed;
 use App\Support\FeedEntry;
 use App\Support\FeedReader;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,18 @@ class Feed extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($feed) {
+            dispatch(new ProcessFeed($feed));
+        });
+    }
 
     public function entries()
     {
@@ -32,7 +45,6 @@ class Feed extends Model
             ], [
                 'title' => $entry->title,
                 'summary' => $entry->summary,
-                'content' => $entry->content,
                 'link' => $entry->link,
             ]);
         });

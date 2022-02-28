@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url')->unique();
-            $table->timestamp('last_processed_at')->nullable();
+            $table->timestamp('last_processed_at')->default(now());
             $table->timestamps();
         });
     }

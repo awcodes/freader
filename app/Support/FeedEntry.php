@@ -10,9 +10,8 @@ class FeedEntry
         public string $id,
         public string $title,
         public string $link,
-        public string $summary,
-        public string $content,
         public Carbon $updated,
+        public ?string $summary,
     ) {
     }
 }

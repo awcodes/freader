@@ -36,23 +36,47 @@ class FeedReader
     {
         $results = $this->document->parse([
             'updated' => ['uses' => 'updated'],
+            'last_build_date' => ['uses' => 'lastBuildDate'],
         ]);
 
-        return Carbon::parse($results['updated']);
+        $date = $results['updated'] ?: $results['last_build_date'];
+
+        return Carbon::parse($date);
     }
 
     public function entries(): Collection
     {
-        $entries = $this->document->parse([
+        // RSS rss has item
+        // ATOM feed has entry
+
+        $articles = $this->document->parse([
             'entries' => [
-                'uses' => 'entry[id,title,link::href>link,summary,content,updated]',
+                'uses' => 'entry[id,title,link::href>link,summary,updated]',
+            ],
+            'items' => [
+                'uses' => 'channel.item[guid,title,link,pubDate,description,author,enclosure]',
             ]
         ]);
 
-        return collect($entries['entries'])->map(fn (array $entry) => new FeedEntry(...[
-            ...$entry,
-            'updated' => Carbon::parse($entry['updated']),
-        ]));
+        ray($articles);
+
+        if ($articles['entries']) {
+            return collect($articles['entries'])->map(fn (array $entry) => new FeedEntry(...[
+                'id' => $entry['id'],
+                'title' => $entry['title'],
+                'link' => $entry['link'],
+                'summary' => $entry['summary'],
+                'updated' => Carbon::parse($entry['updated']),
+            ]));
+        } elseif ($articles['items']) {
+            return collect($articles['items'])->map(fn (array $item) => new FeedEntry(...[
+                'id' => $item['guid'],
+                'title' => $item['title'],
+                'link' => $item['link'],
+                'summary' => $item['description'],
+                'updated' => Carbon::parse($item['pubDate']),
+            ]));
+        }
     }
 
     public function loaded(): bool
