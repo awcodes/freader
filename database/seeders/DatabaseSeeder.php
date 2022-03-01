@@ -35,13 +35,14 @@ class DatabaseSeeder extends Seeder
             'Carl Alexander' => 'https://carlalexander.ca/feed/',
             'Tom McFarlin' => 'https://tommcfarlin.com/feed/',
             'Web Design Ledger' => 'https://webdesignledger.com/feed/',
+            'Josh Comeau' => 'https://www.joshwcomeau.com/rss.xml',
         ];
 
         foreach ($feeds as $name => $url) {
             Feed::create([
                 'name' => $name,
                 'url' => $url,
-                'last_processed_at' => now()->subDay(),
+                'last_processed_at' => now()->subDays(7),
             ]);
         }
     }

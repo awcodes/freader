@@ -14,6 +14,7 @@ class Entry extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'read' => 'boolean',
         'updated' => 'datetime'
     ];
 

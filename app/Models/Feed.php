@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Jobs\ProcessFeed;
 use App\Support\FeedEntry;
 use App\Support\FeedReader;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Feed extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'last_updated_at' => 'datetime'
+    ];
 
     /**
      * The "booted" method of the model.
@@ -28,7 +33,12 @@ class Feed extends Model
 
     public function entries()
     {
-        return $this->hasMany(Entry::class);
+        return $this->hasMany(Entry::class)->latest();
+    }
+
+    public function unreadEntries()
+    {
+        return $this->hasMany(Entry::class)->where('read', 0)->orWhereDate('updated_at', Carbon::today())->latest();
     }
 
     public function process(): bool

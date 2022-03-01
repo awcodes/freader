@@ -12,6 +12,7 @@ class FeedEntry
         public string $link,
         public Carbon $updated,
         public ?string $summary,
+        public ?string $content,
     ) {
     }
 }
