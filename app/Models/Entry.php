@@ -13,6 +13,10 @@ class Entry extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'updated' => 'datetime'
+    ];
+
     public function feed()
     {
         return $this->belongsTo(Feed::class);

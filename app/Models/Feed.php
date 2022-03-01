@@ -46,6 +46,7 @@ class Feed extends Model
                 'title' => $entry->title,
                 'summary' => $entry->summary,
                 'link' => $entry->link,
+                'updated' => $entry->updated,
             ]);
         });
 

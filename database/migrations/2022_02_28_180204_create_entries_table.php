@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('summary')->nullable();
             $table->string('feed_entry_id');
             $table->timestamp('updated')->nullable();
+            $table->boolean('read')->default(false);
             $table->timestamps();
         });
     }

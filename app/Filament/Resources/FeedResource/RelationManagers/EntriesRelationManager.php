@@ -7,6 +7,7 @@ use Filament\Tables;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\EntryResource;
 use Filament\Resources\RelationManagers\HasManyRelationManager;
 

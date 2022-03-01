@@ -58,24 +58,28 @@ class FeedReader
             ]
         ]);
 
-        ray($articles);
-
         if ($articles['entries']) {
-            return collect($articles['entries'])->map(fn (array $entry) => new FeedEntry(...[
-                'id' => $entry['id'],
-                'title' => $entry['title'],
-                'link' => $entry['link'],
-                'summary' => $entry['summary'],
-                'updated' => Carbon::parse($entry['updated']),
-            ]));
+            return collect($articles['entries'])->map(function (array $entry): FeedEntry {
+                $newEntry = [
+                    'id' => $entry['id'],
+                    'title' => $entry['title'],
+                    'link' => $entry['link'],
+                    'summary' => $entry['summary'],
+                    'updated' => Carbon::parse($entry['updated']),
+                ];
+                return new FeedEntry(...$newEntry);
+            });
         } elseif ($articles['items']) {
-            return collect($articles['items'])->map(fn (array $item) => new FeedEntry(...[
-                'id' => $item['guid'],
-                'title' => $item['title'],
-                'link' => $item['link'],
-                'summary' => $item['description'],
-                'updated' => Carbon::parse($item['pubDate']),
-            ]));
+            return collect($articles['items'])->map(function (array $item): FeedEntry {
+                $newEntry = [
+                    'id' => $item['guid'],
+                    'title' => $item['title'],
+                    'link' => $item['link'],
+                    'summary' => $item['description'],
+                    'updated' => Carbon::parse($item['pubDate']),
+                ];
+                return new FeedEntry(...$newEntry);
+            });
         }
     }
 
