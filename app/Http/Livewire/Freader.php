@@ -35,11 +35,17 @@ class Freader extends Component
         if ($id) {
             $entry = Entry::where('id', $id)->first();
             $entry->update(['read' => true]);
-            $this->currentFeed->refresh();
-            $this->updateCount($this->currentFeed->id);
+        } else {
+            $first = $this->currentFeed->unreadEntries->where('read', 0)->first();
+            if ($first) {
+                $first->update(['read' => true]);
+            }
         }
 
-        $this->currentEntry = $id ? $entry : $this->currentFeed->unreadEntries->where('read', 0)->first();
+        $this->currentFeed->refresh();
+        $this->updateCount($this->currentFeed->id);
+
+        $this->currentEntry = $id ? $entry : $first;
     }
 
     public function updateCount($feedId)

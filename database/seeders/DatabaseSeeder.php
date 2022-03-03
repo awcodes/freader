@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             'Tom McFarlin' => 'https://tommcfarlin.com/feed/',
             'Web Design Ledger' => 'https://webdesignledger.com/feed/',
             'Josh Comeau' => 'https://www.joshwcomeau.com/rss.xml',
+            'Laravel News' => 'https://feed.laravel-news.com/',
         ];
 
         foreach ($feeds as $name => $url) {

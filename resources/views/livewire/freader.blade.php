@@ -241,6 +241,7 @@
             </div>
             <aside
                 class="relative flex-shrink-0 hidden overflow-y-auto border-r border-gray-200 dark:border-black xl:order-first xl:flex xl:flex-col w-96">
+
                 <!-- Start secondary column (hidden on smaller screens) -->
                 <ul class="absolute inset-0 divide-y divide-gray-200 dark:divide-black">
                     @forelse($currentFeed->unreadEntries as $entry)
@@ -248,14 +249,17 @@
                             <button type="button" wire:click.prevent="setCurrentEntry({{ $entry->id }})"
                                 @class([
                                     'block w-full px-6 py-3 text-left hover:bg-gray-600 hover:text-gray-200 group',
-                                    'bg-gray-600 text-gray-200' => $currentEntry->id === $entry->id,
+                                    'bg-gray-600 text-gray-200' =>
+                                        $currentEntry && $currentEntry->id === $entry->id,
                                     'opacity-50' => $entry->read,
                                 ])>
                                 <h2 class="truncate">{{ $entry->title }}</h2>
                                 <time @class([
                                     'text-sm group-hover:text-gray-300',
-                                    'text-gray-900 dark:text-gray-300' => $currentEntry->id === $entry->id,
-                                    'text-gray-700 dark:text-gray-400' => $currentEntry->id !== $entry->id,
+                                    'text-gray-900 dark:text-gray-300' =>
+                                        $currentEntry && $currentEntry->id === $entry->id,
+                                    'text-gray-700 dark:text-gray-400' =>
+                                        $currentEntry && $currentEntry->id !== $entry->id,
                                 ])
                                     date="{{ $entry->updated }}">{{ $entry->updated->diffForHumans() }}</time>
                             </button>
